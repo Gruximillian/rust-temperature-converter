@@ -28,50 +28,6 @@ fn main() {
     println!(" ");
 }
 
-fn get_converted_temperature(option:u32) -> f32 {
-    let result:f32;
-
-    loop {
-        println!(" ");
-        println!("Enter the temperature:");
-        println!(" ");
-
-        let mut temperature = String::new();
-
-        io::stdin().read_line(&mut temperature)
-            .expect("Failed to read!");
-
-        let temperature:f32 = match temperature.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {
-                println!("Invalid entry! Please enter a number.");
-                continue;
-            }
-        };
-
-        if option == 0 && temperature < -273.15 {
-            println!("Lowest valid temperature value in Celsius is {}C", -273.15);
-            println!(" ");
-            continue;
-        }
-
-        if option == 1 && temperature < -459.67 {
-            println!("Lowest valid temperature value in Fahrenheit is {}F", -459.67);
-            println!(" ");
-            continue;
-        }
-
-        // index has to be converted to usize to access the array elements
-        let option = usize::try_from(option).unwrap();
-
-        result = CONVERTERS[option](temperature);
-
-        break;
-    }
-
-    result
-}
-
 fn get_conversion_type() -> u32 {
     const C_TO_F: &str = "Celsius to Fahrenheit";
     const F_TO_C: &str = "Fahrenheit to Celsius";
@@ -116,6 +72,50 @@ fn get_conversion_type() -> u32 {
 
     // finally we return a valid user selection :)
     selected
+}
+
+fn get_converted_temperature(option:u32) -> f32 {
+    let result:f32;
+
+    loop {
+        println!(" ");
+        println!("Enter the temperature:");
+        println!(" ");
+
+        let mut temperature = String::new();
+
+        io::stdin().read_line(&mut temperature)
+            .expect("Failed to read!");
+
+        let temperature:f32 = match temperature.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Invalid entry! Please enter a number.");
+                continue;
+            }
+        };
+
+        if option == 0 && temperature < -273.15 {
+            println!("Lowest valid temperature value in Celsius is {}C", -273.15);
+            println!(" ");
+            continue;
+        }
+
+        if option == 1 && temperature < -459.67 {
+            println!("Lowest valid temperature value in Fahrenheit is {}F", -459.67);
+            println!(" ");
+            continue;
+        }
+
+        // index has to be converted to usize to access the array elements
+        let option = usize::try_from(option).unwrap();
+
+        result = CONVERTERS[option](temperature);
+
+        break;
+    }
+
+    result
 }
 
 fn convert_to_fahrenheit(t: f32) -> f32 {
